@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Salinewin.exe Prank</title>
+<style>
+body {
+  margin:0; padding:0; overflow:hidden; background:black; color:white;
+  font-family:'Courier New', monospace; position:relative;
+}
+button#downloadBtn {
+  position:fixed;
+  top:50%;
+  left:50%;
+  transform:translate(-50%, -50%);
+  padding:20px 40px;
+  font-size:24px;
+  z-index:10005;
+  cursor:pointer;
+}
+.popup {
+  position:absolute;
+  width:300px;
+  height:150px;
+  background-color:rgba(0,0,0,0.8);
+  border:2px solid red;
+  color:white;
+  padding:10px;
+  font-size:18px;
+  z-index:10002;
+}
+.bsod {
+  position:fixed;
+  top:0; left:0; width:100%; height:100%;
+  background-color:blue; color:white;
+  display:none; z-index:10003;
+  padding:20px; font-size:18px; text-align:center;
+}
+.progress-bar {width:100%; background-color:#ddd; margin-top:20px;}
+.progress {height:20px; width:0; background:red; animation:progress 5s infinite;}
+@keyframes progress {0%{width:0%} 100%{width:100%;}}
+.square {
+  position:absolute;
+  width:20px;
+  height:20px;
+  opacity:0.7;
+  z-index:10001;
+}
+</style>
+</head>
+<body>
+
+<button id="downloadBtn">Download</button>
+
+<audio id="audio" loop>
+  <source src="salinewin.exe-9-(fire-warning)-made-with-Voicemod.mp3" type="audio/mp3">
+  Your browser does not support the audio element.
+</audio>
+
+<script>
+let running = false;
+
+function rand(min,max){return Math.floor(Math.random()*(max-min+1))+min;}
+function randomColor(){return `rgb(${rand(0,255)},${rand(0,255)},${rand(0,255)})`;}
+
+// Error popups
+function spawnPopup(){
+  if(!running) return;
+  let popup = document.createElement('div');
+  popup.className='popup';
+  popup.style.top=rand(0,window.innerHeight-150)+'px';
+  popup.style.left=rand(0,window.innerWidth-300)+'px';
+  popup.textContent='ERROR: SYSTEM COMPROMISED!';
+  document.body.appendChild(popup);
+  setTimeout(()=>{popup.remove();}, 2000);
+  setTimeout(spawnPopup, rand(50,150));
+}
+
+// BSOD
+function showBSOD(){
+  if(!running) return;
+  let bsod = document.createElement('div');
+  bsod.className='bsod';
+  bsod.innerHTML=`
+    <h1>:(</h1>
+    <p>Your PC ran into a problem and needs to restart.</p>
+    <p>We're just collecting some error info, and then we'll restart for you.</p>
+    <div class="progress-bar"><div class="progress"></div></div>
+  `;
+  document.body.appendChild(bsod);
+  setTimeout(()=>bsod.style.display='block',100);
+}
+
+// Random colored squares
+function spawnSquare(){
+  if(!running) return;
+  let sq = document.createElement('div');
+  sq.className='square';
+  sq.style.backgroundColor=randomColor();
+  sq.style.top=rand(0,window.innerHeight-20)+'px';
+  sq.style.left=rand(0,window.innerWidth-20)+'px';
+  document.body.appendChild(sq);
+  setTimeout(()=>sq.remove(), 500);
+  setTimeout(spawnSquare, rand(50,150));
+}
+
+// Start simulation
+document.getElementById('downloadBtn').addEventListener('click', ()=>{
+  running = true;
+  document.getElementById('audio').play();
+  spawnPopup();
+  showBSOD();
+  spawnSquare();
+  document.getElementById('downloadBtn').style.display='none';
+});
+</script>
+
+</body>
+</html>
